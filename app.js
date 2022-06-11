@@ -2,10 +2,9 @@ const express = require("express");
 const request = require("request");
 const open = require("open");
 
-const API_KEY =
-  "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2libUZ0WlNJNkltbHVhWFJwWVd3aUxDSndjbTltYVd4bFgzQnJJam94T0RZek9UaDkuV19PSGc4NVJVMF9FTGdfVTMtQkdHa3ZPeHd0TGw0UUQ0QWtIOFpTRnVrQUhmb2dpdnFHS3hjbl9KN3ZleE9QQ1NhUHB3RTQ4cHhzd0s1NGpHSEVPWlE=";
+const API_KEY = "put your api key here"; // put your api key here
 
-const INTEGRATION_ID = "2173510";
+const INTEGRATION_ID = "put your integration id here";
 
 const ifameOne =
   "https://accept.paymob.com/api/acceptance/iframes/391769?payment_token=";
@@ -19,6 +18,8 @@ app.use(express.json());
 app.post("/visa", (req, res) => {
   var authToken = "";
   var orderId = "";
+  const items = req.body.items;
+
   // first rquest to get token
   request.post(
     "https://accept.paymob.com/api/auth/tokens",
@@ -42,7 +43,8 @@ app.post("/visa", (req, res) => {
             delivery_needed: "false",
             amount_cents: "100",
             currency: "EGP",
-            items: req.body.items,
+            // items list from body
+            items: items,
             shipping_data: {
               apartment: "803",
               email: "claudette09@exa.com",
@@ -76,7 +78,7 @@ app.post("/visa", (req, res) => {
           }
           orderId = JSON.parse(response.body).id;
 
-          // third request to get form link
+          // third request to get form link then direct to the browser
           request.post(
             "https://accept.paymob.com/api/acceptance/payment_keys",
             {
@@ -110,10 +112,12 @@ app.post("/visa", (req, res) => {
               if (error) {
                 res.json("error occured");
               }
+              // if you want to open the browser
+              open(ifameOne + JSON.parse(response.body).token);
 
-              open(ifameOne + JSON.parse(response.body).token, {
-                app: "Brave",
-              });
+              // if you want to return the link
+
+              res.json(ifameOne + JSON.parse(response.body).token);
             }
           );
         }
