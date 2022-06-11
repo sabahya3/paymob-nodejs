@@ -7,10 +7,10 @@ const API_KEY = "put your api key here"; // put your api key here
 const INTEGRATION_ID = "put your integration id here";
 
 const ifameOne =
-  "https://accept.paymob.com/api/acceptance/iframes/391769?payment_token=";
+  "https://accept.paymob.com/api/acceptance/iframes/?payment_token="; // put your iframe id here dont use mine
 
 const iframeTwo =
-  "https://accept.paymob.com/api/acceptance/iframes/391770?payment_token=";
+  "https://accept.paymob.com/api/acceptance/iframes/?payment_token="; // put your iframe id here dont use mine
 
 const app = express();
 app.use(express.json());
